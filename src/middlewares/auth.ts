@@ -2,6 +2,7 @@ import DiscordOAuth2 from 'discord-oauth2';
 import { NextFunction, Response } from 'express';
 
 import { verify } from '../handlers/jwt';
+import User from '../models/User';
 import { AuthRequest } from '../types';
 
 export default async (req: AuthRequest, res: Response, next: NextFunction) => {
@@ -23,7 +24,12 @@ export default async (req: AuthRequest, res: Response, next: NextFunction) => {
           res.sendStatus(401);
           return;
         }
-        // TODO User Model 만들고 discord 찾아서 데이터 존재 유무 확인
+        const userData = await User.findOne({ discord: user.id });
+        if (!userData) {
+          res.sendStatus(404);
+          return;
+        }
+        req.token = userData;
         next();
       }
     } else {
