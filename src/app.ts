@@ -1,3 +1,5 @@
+import 'dotenv-safe/config';
+
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import logger from 'morgan';
