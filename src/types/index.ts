@@ -12,11 +12,11 @@ export type ServerError = Error & {
 export type Token = {
   name: string;
   email: string;
-  discord: string;
+  discord?: string;
   friend: string;
-  notification: string;
-  profile: string;
-  admin: boolean;
+  notification?: string;
+  profile?: string;
+  admin?: boolean;
 };
 
 export type AuthRequest = Request & {
