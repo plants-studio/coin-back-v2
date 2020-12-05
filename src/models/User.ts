@@ -15,6 +15,7 @@ const User = createSchema(
   {
     versionKey: false,
     timestamps: true,
+    _id: false,
   },
 );
 
