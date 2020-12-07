@@ -31,6 +31,8 @@ module.exports = {
       },
     ],
     'no-console': 'off',
-    'no-underscore-dangle': ['error', { allow: ['_id', '__v'] }],
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': 'error',
+    'no-await-in-loop': 'off',
   },
 };
