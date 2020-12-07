@@ -8,14 +8,13 @@ const User = createSchema(
     password: Type.string({ required: true }),
     discord: Type.string({ unique: true }),
     friend: Type.objectId({ required: true, unique: true }),
-    notification: Type.array().of(Type.objectId),
+    notification: Type.array().of(Type.objectId()),
     profile: Type.string(),
-    admin: Type.boolean({ default: false }),
+    admin: Type.boolean({ required: true, default: false }),
   },
   {
     versionKey: false,
     timestamps: true,
-    _id: false,
   },
 );
 
