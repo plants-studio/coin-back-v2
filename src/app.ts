@@ -3,6 +3,7 @@ import 'dotenv-safe/config';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
+import mongoose from 'mongoose';
 import logger from 'morgan';
 import path from 'path';
 
@@ -17,6 +18,24 @@ app.use(cookieParser());
 app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api', routes);
+app.use('/', routes);
+
+mongoose.connect(
+  process.env.DB_URI!,
+  {
+    user: process.env.DB_USER,
+    pass: process.env.DB_PASSWORD,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  },
+  (err) => {
+    if (err) {
+      throw err;
+    }
+
+    console.log('db connected');
+  },
+);
 
 export default app;
