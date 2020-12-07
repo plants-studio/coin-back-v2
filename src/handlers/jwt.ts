@@ -1,19 +1,32 @@
+import deasync2 from 'deasync2';
 import jwt from 'jsonwebtoken';
+import { createBlackList } from 'jwt-blacklist';
 
 import {
   Blacklist, Sign, Token, Verify,
 } from '../types';
 
-const jwtBlacklist = require('jwt-blacklist')(jwt);
+function wait<T>(promise: Promise<T>): T {
+  return deasync2.await(promise);
+}
+
+const BlackList = wait(
+  createBlackList({
+    daySize: 7,
+  }),
+);
 
 export const sign: Sign = (payload, secretOrPrivateKey, options) => {
-  const token = jwtBlacklist.sign(payload, secretOrPrivateKey, options);
+  const token = jwt.sign(payload, secretOrPrivateKey, options);
   return token;
 };
 
 export const verify: Verify = (token, secretOrPublicKey, options) => {
   try {
-    const verified = jwtBlacklist.verify(token, secretOrPublicKey, options) as Token;
+    const verified = jwt.verify(token, secretOrPublicKey, options) as Token;
+    if (BlackList.has(token)) {
+      return undefined;
+    }
     return verified;
   } catch {
     return undefined;
@@ -21,5 +34,5 @@ export const verify: Verify = (token, secretOrPublicKey, options) => {
 };
 
 export const blacklist: Blacklist = (token) => {
-  jwtBlacklist.blacklist(token);
+  BlackList.add(token);
 };
