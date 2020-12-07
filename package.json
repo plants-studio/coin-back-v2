@@ -12,6 +12,7 @@
   "dependencies": {
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
+    "deasync2": "^1.0.1",
     "debug": "~2.6.9",
     "discord-oauth2": "^2.6.0",
     "dotenv-safe": "^8.2.0",
@@ -21,6 +22,7 @@
     "mongoose": "^5.11.4",
     "mongoose-unique-validator": "^2.0.3",
     "morgan": "^1.10.0",
+    "sharp": "^0.26.3",
     "ts-mongoose": "^0.0.24"
   },
   "devDependencies": {
@@ -31,6 +33,7 @@
     "@types/mongoose": "5.10.1",
     "@types/mongoose-unique-validator": "^1.0.4",
     "@types/morgan": "^1.9.2",
+    "@types/sharp": "^0.26.1",
     "@typescript-eslint/eslint-plugin": "^4.9.0",
     "@typescript-eslint/parser": "^4.9.0",
     "copyfiles": "^2.4.1",
