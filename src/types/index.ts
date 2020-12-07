@@ -16,7 +16,7 @@ export type Token = {
   friend: string;
   notification?: string;
   profile?: string;
-  admin?: boolean;
+  admin: boolean;
 };
 
 export type AuthRequest = Request & {
@@ -26,7 +26,7 @@ export type AuthRequest = Request & {
 export type Sign = (
   payload: string | object | Buffer,
   secretOrPrivateKey: jwt.Secret,
-  options: jwt.SignOptions,
+  options?: jwt.SignOptions,
 ) => string;
 
 export type Verify = (
@@ -36,3 +36,15 @@ export type Verify = (
 ) => Token | undefined;
 
 export type Blacklist = (token: string) => void;
+
+export type SignInRequestBody = {
+  email: string;
+  password: string;
+};
+
+export type SignUpRequestBody = {
+  name: string;
+  email: string;
+  password: string;
+  profile?: string;
+}
