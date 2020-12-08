@@ -1,3 +1,4 @@
+import mongooseUniqueValidator from 'mongoose-unique-validator';
 import { createSchema, Type, typedModel } from 'ts-mongoose';
 
 const arr: number[] = [];
@@ -28,5 +29,7 @@ const Tag = createSchema(
     timestamps: true,
   },
 );
+
+Tag.plugin(mongooseUniqueValidator);
 
 export default typedModel('Tag', Tag);
