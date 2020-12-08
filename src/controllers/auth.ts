@@ -1,5 +1,3 @@
-import 'mongoose';
-
 import { pbkdf2Sync, randomBytes } from 'crypto';
 import { Request, Response } from 'express';
 import { readFileSync } from 'fs';
