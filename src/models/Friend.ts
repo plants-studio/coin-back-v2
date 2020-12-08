@@ -1,3 +1,4 @@
+import mongooseUniqueValidator from 'mongoose-unique-validator';
 import { createSchema, Type, typedModel } from 'ts-mongoose';
 
 const Friend = createSchema(
@@ -12,5 +13,7 @@ const Friend = createSchema(
     timestamps: true,
   },
 );
+
+Friend.plugin(mongooseUniqueValidator);
 
 export default typedModel('Friend', Friend);
