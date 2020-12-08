@@ -20,7 +20,7 @@ const Tag = createSchema(
   {
     name: Type.string({ required: true, unique: true, trim: true }),
     tags: Type.array({ default: () => shuffle(arr), required: true }).of(
-      Type.string({ unique: true }),
+      Type.number({ unique: true }),
     ),
   },
   {
