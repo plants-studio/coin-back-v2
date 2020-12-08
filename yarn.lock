@@ -3335,6 +3335,11 @@ touch@^3.1.0:
   dependencies:
     nopt "~1.0.10"
 
+ts-mongoose-pagination@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/ts-mongoose-pagination/-/ts-mongoose-pagination-1.1.2.tgz#6bbd804f2f6100fb59fed3602d174b8c41d2cd24"
+  integrity sha512-KkhfTX5VmGy4WVVkoxxL+M3lx9gSjwjeP1svt4oT9vigPDquX99omH3sm0gvlN1c3JgyVEavtypsw8yl2WGyFA==
+
 ts-mongoose@^0.0.24:
   version "0.0.24"
   resolved "https://registry.yarnpkg.com/ts-mongoose/-/ts-mongoose-0.0.24.tgz#d6d1d4c5c62669560a3f3e26c0dd8a7365d1aee4"
