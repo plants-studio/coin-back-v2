@@ -16,12 +16,12 @@ const BlackList = wait(
   }),
 );
 
-export const sign: Sign = (payload, secretOrPrivateKey, options) => {
+const sign: Sign = (payload, secretOrPrivateKey, options) => {
   const token = jwt.sign(payload, secretOrPrivateKey, options);
   return token;
 };
 
-export const verify: Verify = (token, secretOrPublicKey, options) => {
+const verify: Verify = (token, secretOrPublicKey, options) => {
   try {
     const verified = jwt.verify(token, secretOrPublicKey, options) as Token;
     if (BlackList.has(token)) {
@@ -33,6 +33,8 @@ export const verify: Verify = (token, secretOrPublicKey, options) => {
   }
 };
 
-export const blacklist: Blacklist = (token) => {
+const blacklist: Blacklist = (token) => {
   BlackList.add(token);
 };
+
+export { blacklist, sign, verify };
