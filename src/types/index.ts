@@ -34,7 +34,7 @@ type Verify = (
   token: string,
   secretOrPublicKey: jwt.Secret,
   options?: jwt.VerifyOptions,
-) => Token | undefined;
+) => Promise<Token | undefined>;
 
 type Blacklist = (token: string) => void;
 
@@ -50,9 +50,15 @@ type SignUpRequestBody = {
   profile?: string;
 };
 
+type EditUserRequestBody = {
+  name?: string;
+  profile?: string;
+};
+
 export {
   AuthRequest,
   Blacklist,
+  EditUserRequestBody,
   ServerError,
   Sign,
   SignInRequestBody,

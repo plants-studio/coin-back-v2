@@ -10,7 +10,9 @@ import { blacklist, sign, verify } from '../handlers/jwt';
 import {
   Friend, Notification, Tag, User,
 } from '../models';
-import { AuthRequest, SignInRequestBody, SignUpRequestBody } from '../types';
+import {
+  AuthRequest, EditUserRequestBody, SignInRequestBody, SignUpRequestBody,
+} from '../types';
 
 const discord = async (req: Request, res: Response) => {
   if (req.headers.authorization?.startsWith('Bearer ')) {
@@ -73,12 +75,7 @@ const discord = async (req: Request, res: Response) => {
 
 const edit = async (req: AuthRequest, res: Response) => {
   const { token } = req;
-  const { name, profile } = req.body;
-
-  if (name.search('#') !== -1) {
-    res.status(412).send("닉네임에는 '#'이 포함될 수 없습니다");
-    return;
-  }
+  const { name, profile }: EditUserRequestBody = req.body;
 
   const user = await User.findById(token!.id);
   if (!user) {
@@ -88,6 +85,11 @@ const edit = async (req: AuthRequest, res: Response) => {
 
   console.log(token);
   if (name) {
+    if (name.search('#') !== -1) {
+      res.status(412).send("닉네임에는 '#'이 포함될 수 없습니다");
+      return;
+    }
+
     let tag = await Tag.findOne({ name });
     if (!tag) {
       const newTag = new Tag({
