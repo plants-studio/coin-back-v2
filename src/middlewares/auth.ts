@@ -24,7 +24,7 @@ export default async (req: AuthRequest, res: Response, next: NextFunction) => {
           res.sendStatus(401);
           return;
         }
-        const userData = (await User.findOne({ discord: user.id })) as unknown as Token;
+        const userData = ((await User.findOne({ discord: user.id })) as unknown) as Token;
         if (!userData) {
           res.sendStatus(404);
           return;
