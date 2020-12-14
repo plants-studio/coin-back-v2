@@ -7,7 +7,7 @@
 import http from 'http';
 
 import app from '../app';
-import { ServerError } from '../types/index';
+import { ServerError } from '../types';
 
 const debug = require('debug')('coin-back-v2:server');
 
@@ -53,9 +53,7 @@ function onError(error: ServerError) {
     throw error;
   }
 
-  const bind = typeof port === 'string'
-    ? `Pipe ${port}`
-    : `Port ${port}`;
+  const bind = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -74,9 +72,7 @@ function onError(error: ServerError) {
 
 function onListening() {
   const addr = server.address();
-  const bind = typeof addr === 'string'
-    ? `pipe ${addr}`
-    : `port ${addr!.port}`;
+  const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr!.port}`;
   debug(`Listening on ${bind}`);
 }
 
