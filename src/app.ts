@@ -6,7 +6,9 @@ import express from 'express';
 import mongoose from 'mongoose';
 import logger from 'morgan';
 import path from 'path';
+import swaggerUi from 'swagger-ui-express';
 
+import swagger from './docs/swagger.json';
 import routes from './routes';
 
 const app = express();
@@ -19,6 +21,7 @@ app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swagger));
 
 mongoose.connect(
   process.env.DB_URI!,

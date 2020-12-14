@@ -1,0 +1,60 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Coin",
+    "description": "Competition support platform api docs",
+    "version": "1.0.0",
+    "contact": {
+      "email": "al.co.js@kakao.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://coin.herokuapp.com/api"
+    },
+    {
+      "url": "http://localhost:4000/api"
+    }
+  ],
+  "tags": [
+    {
+      "name": "auth",
+      "description": "Authentication methods"
+    },
+    {
+      "name": "friend",
+      "description": "Friend manage methods"
+    },
+    {
+      "name": "league",
+      "description": "League manage methods"
+    },
+    {
+      "name": "notification",
+      "description": "Notification manage methods"
+    },
+    {
+      "name": "post",
+      "description": "Post manage methods"
+    },
+    {
+      "name": "team",
+      "description": "Team manage methods"
+    }
+  ],
+  "paths": {
+    "/auth/refresh": {
+      "post": {
+        "tags": ["auth"],
+        "description":"Receive the refresh token and refresh the token",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+      
+    }
+  }
+}

@@ -1,11 +1,11 @@
 {
   "name": "coin-back-v2",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "clean": "rimraf dist/",
     "build": "yarn clean && tsc && yarn copy",
-    "dev": "nodemon --exec ts-node ./src/bin/www.ts --watch",
+    "dev": "nodemon --exec ts-node src/bin/www.ts --watch",
     "start": "node dist/bin/www.js",
     "copy": "copyfiles -u 1 src/**/*.webp dist/"
   },
@@ -22,7 +22,9 @@
     "mongoose": "^5.11.4",
     "mongoose-unique-validator": "^2.0.3",
     "morgan": "^1.10.0",
+    "openapi-types": "^7.0.1",
     "sharp": "^0.26.3",
+    "swagger-ui-express": "^4.1.5",
     "ts-mongoose": "^0.0.24"
   },
   "devDependencies": {
@@ -34,6 +36,7 @@
     "@types/mongoose-unique-validator": "^1.0.4",
     "@types/morgan": "^1.9.2",
     "@types/sharp": "^0.26.1",
+    "@types/swagger-ui-express": "^4.1.2",
     "@typescript-eslint/eslint-plugin": "^4.9.0",
     "@typescript-eslint/parser": "^4.9.0",
     "copyfiles": "^2.4.1",

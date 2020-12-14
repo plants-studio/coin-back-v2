@@ -1,7 +1,7 @@
 import { Request } from 'express';
 import jwt from 'jsonwebtoken';
 
-export type ServerError = Error & {
+type ServerError = Error & {
   errno: number;
   code: string;
   path: string;
@@ -9,42 +9,54 @@ export type ServerError = Error & {
   stack: string;
 };
 
-export type Token = {
+type Token = {
+  id: string;
   name: string;
   email: string;
   discord?: string;
   friend: string;
-  notification?: string;
+  notification: string;
   profile?: string;
   admin: boolean;
 };
 
-export type AuthRequest = Request & {
-  token: Token;
+type AuthRequest = Request & {
+  token?: Token;
 };
 
-export type Sign = (
+type Sign = (
   payload: string | object | Buffer,
   secretOrPrivateKey: jwt.Secret,
   options?: jwt.SignOptions,
 ) => string;
 
-export type Verify = (
+type Verify = (
   token: string,
   secretOrPublicKey: jwt.Secret,
   options?: jwt.VerifyOptions,
 ) => Token | undefined;
 
-export type Blacklist = (token: string) => void;
+type Blacklist = (token: string) => void;
 
-export type SignInRequestBody = {
+type SignInRequestBody = {
   email: string;
   password: string;
 };
 
-export type SignUpRequestBody = {
+type SignUpRequestBody = {
   name: string;
   email: string;
   password: string;
   profile?: string;
-}
+};
+
+export {
+  AuthRequest,
+  Blacklist,
+  ServerError,
+  Sign,
+  SignInRequestBody,
+  SignUpRequestBody,
+  Token,
+  Verify,
+};

@@ -1,14 +1,14 @@
-import uniqueValidator from 'mongoose-unique-validator';
+import mongooseUniqueValidator from 'mongoose-unique-validator';
 import { createSchema, Type, typedModel } from 'ts-mongoose';
 
 const User = createSchema(
   {
     name: Type.string({ required: true, unique: true, trim: true }),
     email: Type.string({ required: true, unique: true, trim: true }),
-    password: Type.string({ required: true }),
-    discord: Type.string({ unique: true }),
+    password: Type.string(),
+    discord: Type.string({ unique: true, spars: true }),
     friend: Type.objectId({ required: true, unique: true }),
-    notification: Type.array().of(Type.objectId()),
+    notification: Type.objectId({ required: true, unique: true }),
     profile: Type.string(),
     admin: Type.boolean({ required: true, default: false }),
   },
@@ -18,6 +18,6 @@ const User = createSchema(
   },
 );
 
-User.plugin(uniqueValidator);
+User.plugin(mongooseUniqueValidator);
 
 export default typedModel('User', User);

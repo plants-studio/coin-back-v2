@@ -1,3 +1,4 @@
+import mongooseUniqueValidator from 'mongoose-unique-validator';
 import { createSchema, Type, typedModel } from 'ts-mongoose';
 
 const arr: number[] = [];
@@ -19,8 +20,8 @@ const shuffle = (a: Array<number>) => {
 const Tag = createSchema(
   {
     name: Type.string({ required: true, unique: true, trim: true }),
-    tags: Type.array({ default: () => shuffle(arr), required: true }).of(
-      Type.string({ unique: true }),
+    list: Type.array({ default: () => shuffle(arr), required: true }).of(
+      Type.number(),
     ),
   },
   {
@@ -28,5 +29,7 @@ const Tag = createSchema(
     timestamps: true,
   },
 );
+
+Tag.plugin(mongooseUniqueValidator);
 
 export default typedModel('Tag', Tag);
