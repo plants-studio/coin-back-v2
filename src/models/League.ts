@@ -1,6 +1,5 @@
 import mongooseUniqueValidator from 'mongoose-unique-validator';
 import { createSchema, Type, typedModel } from 'ts-mongoose';
-import { mongoosePagination } from 'ts-mongoose-pagination';
 
 const League = createSchema(
   {
@@ -19,7 +18,7 @@ const League = createSchema(
     location: Type.string({ required: true }),
     participant: Type.number({ required: true, default: 0 }),
     host: Type.string({ required: true }),
-    teams: Type.array({ required: true }).of(Type.objectId({ unique: true })),
+    teams: Type.array({ required: true }).of(Type.objectId()),
     status: Type.string({ required: true, default: 'RECRUIT' }),
   },
   {
@@ -30,7 +29,6 @@ const League = createSchema(
 
 League.index({ title: 'text', introduce: 'text', host: 'text' }, { defaultLanguage: 'kr' });
 League.plugin(mongooseUniqueValidator);
-League.plugin(mongoosePagination);
 
 const model = typedModel('League', League);
 model.createIndexes();

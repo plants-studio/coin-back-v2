@@ -1,6 +1,5 @@
 import mongooseUniqueValidator from 'mongoose-unique-validator';
 import { createSchema, Type, typedModel } from 'ts-mongoose';
-import { mongoosePagination } from 'ts-mongoose-pagination';
 
 const Post = createSchema(
   {
@@ -18,7 +17,6 @@ const Post = createSchema(
 
 Post.index({ title: 'text', content: 'text', writer: 'text' }, { defaultLanguage: 'kr' });
 Post.plugin(mongooseUniqueValidator);
-Post.plugin(mongoosePagination);
 
 const model = typedModel('Post', Post);
 model.createIndexes();

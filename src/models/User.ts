@@ -5,8 +5,8 @@ const User = createSchema(
   {
     name: Type.string({ required: true, unique: true, trim: true }),
     email: Type.string({ required: true, unique: true, trim: true }),
-    password: Type.string({ required: true }),
-    discord: Type.string({ unique: true }),
+    password: Type.string(),
+    discord: Type.string({ unique: true, spars: true }),
     friend: Type.objectId({ required: true, unique: true }),
     notification: Type.objectId({ required: true, unique: true }),
     profile: Type.string(),

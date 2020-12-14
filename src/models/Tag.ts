@@ -20,8 +20,8 @@ const shuffle = (a: Array<number>) => {
 const Tag = createSchema(
   {
     name: Type.string({ required: true, unique: true, trim: true }),
-    tags: Type.array({ default: () => shuffle(arr), required: true }).of(
-      Type.number({ unique: true }),
+    list: Type.array({ default: () => shuffle(arr), required: true }).of(
+      Type.number(),
     ),
   },
   {
