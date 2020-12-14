@@ -257,9 +257,9 @@ const signUp = async (req: Request, res: Response) => {
   const salt = randomBytes(16).toString('base64');
   const encrypt = pbkdf2Sync(password, salt, 100000, 64, 'SHA512').toString('base64');
 
-  const newFriend = new Friend({ list: [] });
+  const newFriend = new Friend();
   await newFriend.save();
-  const newNotification = new Notification({ list: [] });
+  const newNotification = new Notification();
   await newNotification.save();
 
   const newUser = new User({
