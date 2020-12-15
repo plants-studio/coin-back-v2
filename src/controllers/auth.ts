@@ -1,16 +1,18 @@
 import { pbkdf2Sync, randomBytes } from 'crypto';
 import DiscordOAuth2 from 'discord-oauth2';
 import { Request, Response } from 'express';
-import { readFileSync, unlinkSync } from 'fs';
+import { existsSync, unlinkSync } from 'fs';
 import path from 'path';
 import sharp from 'sharp';
 
-import hex from '../handlers/hex';
-import { blacklist, sign, verify } from '../handlers/jwt';
 import {
   Friend, Notification, Tag, User,
 } from '../models';
-import { AuthRequest, SignInRequestBody, SignUpRequestBody } from '../types';
+import {
+  AuthRequest, EditUserRequestBody, SignInRequestBody, SignUpRequestBody,
+} from '../types';
+import hex from '../utils/hex';
+import { blacklist, sign, verify } from '../utils/jwt';
 
 const discord = async (req: Request, res: Response) => {
   if (req.headers.authorization?.startsWith('Bearer ')) {
@@ -73,12 +75,7 @@ const discord = async (req: Request, res: Response) => {
 
 const edit = async (req: AuthRequest, res: Response) => {
   const { token } = req;
-  const { name, profile } = req.body;
-
-  if (name.search('#') !== -1) {
-    res.status(412).send("닉네임에는 '#'이 포함될 수 없습니다");
-    return;
-  }
+  const { name, profile }: EditUserRequestBody = req.body;
 
   const user = await User.findById(token!.id);
   if (!user) {
@@ -86,8 +83,12 @@ const edit = async (req: AuthRequest, res: Response) => {
     return;
   }
 
-  console.log(token);
   if (name) {
+    if (name.search('#') !== -1) {
+      res.sendStatus(412);
+      return;
+    }
+
     let tag = await Tag.findOne({ name });
     if (!tag) {
       const newTag = new Tag({
@@ -97,7 +98,7 @@ const edit = async (req: AuthRequest, res: Response) => {
       tag = newTag;
     }
     if (tag!.list.length === 0) {
-      res.status(409).send('닉네임이 너무 많이 사용되고 있어 더 이상 사용할 수 없습니다');
+      res.sendStatus(409);
       return;
     }
     const oldName = token!.name.split('#');
@@ -111,13 +112,13 @@ const edit = async (req: AuthRequest, res: Response) => {
     const id = Buffer.from(token!.id).toString('base64');
     const dir = path.join(__dirname, '..', 'public', 'images', 'profiles');
     const file = path.join(dir, `${id}.webp`);
-    try {
-      readFileSync(file);
+
+    if (existsSync(file)) {
       unlinkSync(file);
-    } finally {
-      const buffer = profile.split(';base64,')[1];
-      await sharp(Buffer.from(buffer, 'base64')).resize(150, 150).webp().toFile(file);
     }
+
+    const buffer = profile.split(';base64,')[1];
+    await sharp(Buffer.from(buffer, 'base64')).resize(150, 150).webp().toFile(file);
     await user.updateOne({ profile });
   }
 
@@ -176,14 +177,14 @@ const signIn = async (req: Request, res: Response) => {
 
   const user = await User.findOne({ email });
   if (!user) {
-    res.status(404).send('유저를 찾을 수 없습니다');
+    res.sendStatus(404);
     return;
   }
 
   const temp = user.password!.split('|');
   const encrypt = pbkdf2Sync(password, temp[1], 100000, 64, 'SHA512').toString('base64');
   if (temp[0] !== encrypt) {
-    res.status(401).send('비밀번호가 옳지 않습니다');
+    res.sendStatus(401);
     return;
   }
 
@@ -193,10 +194,10 @@ const signIn = async (req: Request, res: Response) => {
     const id = Buffer.from(user.id).toString('base64');
     const dir = path.join(__dirname, '..', 'public', 'images', 'profiles');
     const file = path.join(dir, `${id}.webp`);
-    try {
-      readFileSync(file);
+
+    if (existsSync(file)) {
       profile = `/images/profiles/${id}.webp`;
-    } catch {
+    } else {
       const data = user.profile.split(';base64,')[1];
       await sharp(Buffer.from(data, 'base64')).resize(150, 150).webp().toFile(file);
       profile = `/images/profiles/${id}.webp`;
@@ -229,13 +230,7 @@ const signUp = async (req: Request, res: Response) => {
   }: SignUpRequestBody = req.body;
 
   if (name.search('#') !== -1) {
-    res.status(412).send("닉네임에는 '#'이 포함될 수 없습니다");
-    return;
-  }
-
-  const user = await User.findOne({ email });
-  if (user) {
-    res.status(409).send('이미 사용되고 있는 이메일입니다');
+    res.sendStatus(412);
     return;
   }
 
@@ -248,7 +243,7 @@ const signUp = async (req: Request, res: Response) => {
     tag = newTag;
   }
   if (tag!.list.length === 0) {
-    res.status(409).send('닉네임이 너무 많이 사용되고 있어 더 이상 사용할 수 없습니다');
+    res.sendStatus(409);
     return;
   }
   await tag!.updateOne({ $pull: { list: tag!.list[0] } });
@@ -257,9 +252,9 @@ const signUp = async (req: Request, res: Response) => {
   const salt = randomBytes(16).toString('base64');
   const encrypt = pbkdf2Sync(password, salt, 100000, 64, 'SHA512').toString('base64');
 
-  const newFriend = new Friend({ list: [] });
+  const newFriend = new Friend();
   await newFriend.save();
-  const newNotification = new Notification({ list: [] });
+  const newNotification = new Notification();
   await newNotification.save();
 
   const newUser = new User({
@@ -272,7 +267,7 @@ const signUp = async (req: Request, res: Response) => {
   });
 
   await newUser.save();
-  res.status(200).send('계정을 성공적으로 생성했습니다');
+  res.sendStatus(201);
 };
 
 export {

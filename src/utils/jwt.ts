@@ -21,10 +21,10 @@ const sign: Sign = (payload, secretOrPrivateKey, options) => {
   return token;
 };
 
-const verify: Verify = (token, secretOrPublicKey, options) => {
+const verify: Verify = async (token, secretOrPublicKey, options) => {
   try {
     const verified = jwt.verify(token, secretOrPublicKey, options) as Token;
-    if (BlackList.has(token)) {
+    if (await BlackList.has(token)) {
       return undefined;
     }
     return verified;
