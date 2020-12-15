@@ -55,10 +55,61 @@ type EditUserRequestBody = {
   profile?: string;
 };
 
+type CreateLeagueRequestBody = {
+  title: string;
+  deadline: Date;
+  startDate: Date;
+  endDate: Date;
+  introduce: string;
+  rule: string;
+  thumbnail?: string;
+  game: string;
+  teamMin: number;
+  teamMax: number;
+  teamMemMin: number;
+  online: boolean;
+  location: string;
+};
+
+type EditLeagueRequestBody = {
+  title?: string;
+  deadline?: Date;
+  startDate?: Date;
+  endDate?: Date;
+  introduce?: string;
+  rule?: string;
+  thumbnail?: string;
+  game?: string;
+  teamMin?: number;
+  teamMax?: number;
+  teamMemMin?: number;
+  online?: boolean;
+  location?: string;
+};
+
+type CreateTeamRequestBody = {
+  name: string;
+  introduce: string;
+};
+
+type EditTeamRequestBody = {
+  name?: string;
+  introduce?: string;
+};
+
+type ReplyApplyTeamRequestBody = {
+  reply: boolean;
+};
+
 export {
   AuthRequest,
   Blacklist,
+  CreateLeagueRequestBody,
+  CreateTeamRequestBody,
+  EditLeagueRequestBody,
+  EditTeamRequestBody,
   EditUserRequestBody,
+  ReplyApplyTeamRequestBody,
   ServerError,
   Sign,
   SignInRequestBody,
