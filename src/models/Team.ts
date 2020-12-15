@@ -3,10 +3,10 @@ import { createSchema, Type, typedModel } from 'ts-mongoose';
 
 const Team = createSchema(
   {
-    name: Type.string({ required: true, unique: true, trim: true }),
+    name: Type.string({ required: true, trim: true }),
     introduce: Type.string({ required: true }),
     leader: Type.string({ required: true }),
-    list: Type.array({ required: true }).of({
+    list: Type.array({ required: true, default: [] }).of({
       name: Type.string(),
       status: Type.string({ default: 'WAITING' }),
     }),

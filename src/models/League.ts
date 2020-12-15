@@ -1,6 +1,8 @@
 import mongooseUniqueValidator from 'mongoose-unique-validator';
 import { createSchema, Type, typedModel } from 'ts-mongoose';
 
+import { Team } from '.';
+
 const League = createSchema(
   {
     title: Type.string({ required: true }),
@@ -14,11 +16,11 @@ const League = createSchema(
     teamMin: Type.number({ required: true }),
     teamMax: Type.number({ required: true }),
     teamMemMin: Type.number({ required: true }),
-    placeType: Type.string({ required: true }),
+    online: Type.boolean({ required: true }),
     location: Type.string({ required: true }),
     participant: Type.number({ required: true, default: 0 }),
     host: Type.string({ required: true }),
-    teams: Type.array({ required: true }).of(Type.objectId()),
+    team: Type.array({ required: true, default: [] }).of(Team),
     status: Type.string({ required: true, default: 'RECRUIT' }),
   },
   {
