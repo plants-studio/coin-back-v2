@@ -51,7 +51,7 @@ const discord = async (req: Request, res: Response) => {
         // TODO Profile with discord avatar
       });
       await newUser.save();
-      res.status(200).send({
+      res.send({
         email: user.email,
         name: nameTag,
         friend: newFriend.id,
@@ -61,7 +61,7 @@ const discord = async (req: Request, res: Response) => {
       return;
     }
 
-    res.status(200).send({
+    res.send({
       email: userData.email,
       name: userData.name,
       friend: userData.friend,
@@ -136,7 +136,7 @@ const refresh = async (req: Request, res: Response) => {
       }
       const accessToken = sign(verified, process.env.ACCESS_SECRET!, { expiresIn: '7h' });
       const refreshToken = sign(verified, process.env.REFRESH_SECRET!, { expiresIn: '7d' });
-      res.status(200).send({ token: { accessToken, refreshToken } });
+      res.send({ token: { accessToken, refreshToken } });
     } else {
       const oauth = new DiscordOAuth2();
       const newToken = await oauth.tokenRequest({
@@ -146,7 +146,7 @@ const refresh = async (req: Request, res: Response) => {
         clientId: process.env.DISCORD_ID,
         clientSecret: process.env.DISCORD_SECRET,
       });
-      res.status(200).send(newToken);
+      res.send(newToken);
     }
   } else {
     res.sendStatus(401);
@@ -221,7 +221,7 @@ const signIn = async (req: Request, res: Response) => {
 
   const accessToken = sign(tempUser, process.env.ACCESS_SECRET!, { expiresIn: '7h' });
   const refreshToken = sign(tempUser, process.env.REFRESH_SECRET!, { expiresIn: '7d' });
-  res.status(200).send({ token: { accessToken, refreshToken } });
+  res.send({ token: { accessToken, refreshToken } });
 };
 
 const signUp = async (req: Request, res: Response) => {

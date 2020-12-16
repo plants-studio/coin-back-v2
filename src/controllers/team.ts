@@ -12,7 +12,7 @@ const getTeamData = async (req: Request, res: Response) => {
     return;
   }
 
-  res.status(200).send(team);
+  res.send(team);
 };
 
 const removeTeam = async (req: AuthRequest, res: Response) => {
