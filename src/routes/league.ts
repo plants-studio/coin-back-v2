@@ -7,9 +7,9 @@ import {
   getLeagueData,
   getLeagueList,
   removeLeague,
-} from '../../controllers/league';
-import auth from '../../middlewares/auth';
-import wrapAsync from '../../utils/wrapAsync';
+} from '../controllers/league';
+import auth from '../middlewares/auth';
+import wrapAsync from '../utils/wrapAsync';
 
 const router = Router();
 

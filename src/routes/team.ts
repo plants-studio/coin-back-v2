@@ -7,7 +7,7 @@ import {
   getTeamData,
   removeTeam,
   replyApplyTeam,
-} from '../../controllers/team';
+} from '../controllers/team';
 
 const router = Router();
 

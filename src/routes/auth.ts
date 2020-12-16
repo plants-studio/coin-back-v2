@@ -2,9 +2,9 @@ import { Router } from 'express';
 
 import {
   discord, edit, refresh, revoke, signIn, signUp,
-} from '../../controllers/auth';
-import auth from '../../middlewares/auth';
-import wrapAsync from '../../utils/wrapAsync';
+} from '../controllers/auth';
+import auth from '../middlewares/auth';
+import wrapAsync from '../utils/wrapAsync';
 
 const router = Router();
 

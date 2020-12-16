@@ -12,7 +12,7 @@ import { stream } from './configs/winston';
 import swagger from './docs/swagger.json';
 import errorHandler from './middlewares/errorHandler';
 import validationErrorHandler from './middlewares/validationErrorHandler';
-import routes from './routes';
+import apiRoutes from './routes';
 
 const app = express();
 
@@ -28,7 +28,7 @@ app.use(
 );
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
+app.use('/api', apiRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swagger));
 
 app.use(validationErrorHandler);
