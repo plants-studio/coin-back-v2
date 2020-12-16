@@ -42,9 +42,6 @@ const createLeague = async (req: AuthRequest, res: Response) => {
     location,
   }: CreateLeagueRequestBody = req.body;
 
-  const newTeam = new Team();
-  await newTeam.save();
-
   const newLeague = new League({
     title,
     deadline,
@@ -59,7 +56,6 @@ const createLeague = async (req: AuthRequest, res: Response) => {
     teamMemMin,
     online,
     location,
-    team: newTeam.id,
     host: token!.name,
   });
 
