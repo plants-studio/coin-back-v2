@@ -1,9 +1,13 @@
 import { Router } from 'express';
 
-import api from './api';
+import auth from './auth';
+import league from './league';
+import team from './team';
 
 const router = Router();
 
-router.use('/api', api);
+router.use('/auth', auth);
+router.use('/league', league);
+router.use('/team', team);
 
 export default router;
