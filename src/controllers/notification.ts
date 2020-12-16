@@ -7,7 +7,7 @@ const list = async (req: AuthRequest, res: Response) => {
   const { token } = req;
 
   const notification = await Notification.findById(token!.notification);
-  res.status(200).send(notification!.list);
+  res.send(notification!.list);
 };
 
 const remove = async (req: AuthRequest, res: Response) => {

@@ -21,7 +21,7 @@ const getLeagueList = async (req: Request, res: Response) => {
     .sort({ createdAt: -1 })
     .skip(p * l)
     .limit(l);
-  res.status(200).send(leagueList);
+  res.send(leagueList);
 };
 
 const createLeague = async (req: AuthRequest, res: Response) => {
@@ -72,7 +72,7 @@ const getLeagueData = async (req: Request, res: Response) => {
     return;
   }
 
-  res.status(200).send(league);
+  res.send(league);
 };
 
 const removeLeague = async (req: AuthRequest, res: Response) => {
