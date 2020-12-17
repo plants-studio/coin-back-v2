@@ -3,6 +3,23 @@ import { Request, Response } from 'express';
 import { Comment, Post } from '../models';
 import { AuthRequest } from '../types';
 
+const list = async (req: Request, res: Response) => {
+  const { page, limit, search } = req.query;
+  if (!(page && limit)) {
+    res.sendStatus(412);
+    return;
+  }
+
+  const p = Number.parseInt(page.toString(), 10);
+  const l = Number.parseInt(limit.toString(), 10);
+
+  const postList = await Post.find(search ? { $text: { $search: search.toString() } } : {})
+    .sort({ createdAt: -1 })
+    .skip(p * l)
+    .limit(l);
+  res.send(postList);
+};
+
 const create = async (req: AuthRequest, res: Response) => {
   const { token } = req;
   const { title, content, category } = req.body;
@@ -53,4 +70,6 @@ const remove = async (req: AuthRequest, res: Response) => {
   res.sendStatus(200);
 };
 
-export { create, read, remove };
+export {
+  create, list, read, remove,
+};

@@ -3,6 +3,23 @@ import { Request, Response } from 'express';
 import { Team } from '../models';
 import { AuthRequest, EditTeamRequestBody, ReplyApplyTeamRequestBody } from '../types';
 
+const list = async (req: Request, res: Response) => {
+  const { page, limit, search } = req.query;
+  if (!(page && limit)) {
+    res.sendStatus(412);
+    return;
+  }
+
+  const p = Number.parseInt(page.toString(), 10);
+  const l = Number.parseInt(limit.toString(), 10);
+
+  const teamList = await Team.find(search ? { $text: { $search: search.toString() } } : {})
+    .sort({ createdAt: -1 })
+    .skip(p * l)
+    .limit(l);
+  res.send(teamList);
+};
+
 const getTeamData = async (req: Request, res: Response) => {
   const { id } = req.params;
 
@@ -110,5 +127,5 @@ const replyApplyTeam = async (req: AuthRequest, res: Response) => {
 };
 
 export {
-  applyTeam, cancelApplyTeam, editTeam, getTeamData, removeTeam, replyApplyTeam,
+  applyTeam, cancelApplyTeam, editTeam, getTeamData, list, removeTeam, replyApplyTeam,
 };
