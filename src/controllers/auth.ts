@@ -1,16 +1,14 @@
 import { pbkdf2Sync, randomBytes } from 'crypto';
 import DiscordOAuth2 from 'discord-oauth2';
 import { Request, Response } from 'express';
-import { existsSync, unlinkSync } from 'fs';
+import { existsSync } from 'fs';
 import path from 'path';
 import sharp from 'sharp';
 
 import {
   Friend, Notification, Tag, User,
 } from '../models';
-import {
-  AuthRequest, EditUserRequestBody, SignInRequestBody, SignUpRequestBody,
-} from '../types';
+import { SignInRequestBody, SignUpRequestBody } from '../types';
 import hex from '../utils/hex';
 import { blacklist, sign, verify } from '../utils/jwt';
 
@@ -71,58 +69,6 @@ const discord = async (req: Request, res: Response) => {
   } else {
     res.sendStatus(401);
   }
-};
-
-const edit = async (req: AuthRequest, res: Response) => {
-  const { token } = req;
-  const { name, profile }: EditUserRequestBody = req.body;
-
-  const user = await User.findById(token!.id);
-  if (!user) {
-    res.sendStatus(404);
-    return;
-  }
-
-  if (name) {
-    if (name.search('#') !== -1) {
-      res.sendStatus(412);
-      return;
-    }
-
-    let tag = await Tag.findOne({ name });
-    if (!tag) {
-      const newTag = new Tag({
-        name,
-      });
-      await newTag.save();
-      tag = newTag;
-    }
-    if (tag!.list.length === 0) {
-      res.sendStatus(409);
-      return;
-    }
-    const oldName = token!.name.split('#');
-    const oldTag = await Tag.findOne({ name: oldName[0] });
-    const nameTag = `${name}#${tag!.list[0]}`;
-    await oldTag!.updateOne({ $push: { list: Number.parseInt(oldName[1], 10) } });
-    await tag!.updateOne({ $pull: { list: tag!.list[0] } });
-    await user.updateOne({ name: nameTag });
-  }
-  if (profile) {
-    const id = Buffer.from(token!.id).toString('base64');
-    const dir = path.join(__dirname, '..', 'public', 'images', 'profiles');
-    const file = path.join(dir, `${id}.webp`);
-
-    if (existsSync(file)) {
-      unlinkSync(file);
-    }
-
-    const buffer = profile.split(';base64,')[1];
-    await sharp(Buffer.from(buffer, 'base64')).resize(150, 150).webp().toFile(file);
-    await user.updateOne({ profile });
-  }
-
-  res.sendStatus(200);
 };
 
 const refresh = async (req: Request, res: Response) => {
@@ -271,5 +217,5 @@ const signUp = async (req: Request, res: Response) => {
 };
 
 export {
-  discord, edit, refresh, revoke, signIn, signUp,
+  discord, refresh, revoke, signIn, signUp,
 };

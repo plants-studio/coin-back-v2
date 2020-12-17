@@ -8,7 +8,7 @@ import logger from 'morgan';
 import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 
-import { stream } from './configs/winston';
+import { logger as log, stream } from './configs/winston';
 import swagger from './docs/swagger.json';
 import errorHandler from './middlewares/errorHandler';
 import validationErrorHandler from './middlewares/validationErrorHandler';
@@ -48,7 +48,10 @@ mongoose.connect(
       throw err;
     }
 
-    console.log('db connected');
+    log.info('db connected');
+    if (process.env.NODE_ENV === 'development') {
+      console.log('db connected');
+    }
   },
 );
 
